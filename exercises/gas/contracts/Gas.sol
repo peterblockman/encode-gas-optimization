@@ -2,18 +2,18 @@
 pragma solidity 0.8.19;
 
 struct Payment {
-    uint8 paymentType;
-    uint16 amount;
+    uint256 paymentType;
+    uint256 amount;
 }
 
 contract GasContract {
-    uint16 public constant totalSupply = 10000; // cannot be updated
-    mapping(address => uint16) private balances;
+    uint256 public constant totalSupply = 10000; // cannot be updated
+    mapping(address => uint256) private balances;
     mapping(address => Payment[]) private payments;
-    mapping(address => uint8) public whitelist;
+    mapping(address => uint256) public whitelist;
     address[5] public administrators;
 
-    event Transfer(address recipient, uint16 amount);
+    event Transfer(address recipient, uint256 amount);
 
     constructor(address[5] memory _admins, uint256) {
         administrators = _admins;
@@ -25,7 +25,7 @@ contract GasContract {
         }
     }
 
-    function balanceOf(address _user) external view returns (uint16) {
+    function balanceOf(address _user) external view returns (uint256) {
         return balances[_user];
     }
 
@@ -39,7 +39,7 @@ contract GasContract {
 
     function transfer(
         address _recipient,
-        uint16 _amount,
+        uint256 _amount,
         string calldata
     ) external returns (bool) {
         // balances[msg.sender] = balances[msg.sender] - _amount;
@@ -59,9 +59,9 @@ contract GasContract {
 
     function updatePayment(
         address _user,
-        uint8 idx,
-        uint16 _amount,
-        uint8 _type
+        uint256 idx,
+        uint256 _amount,
+        uint256 _type
     ) external {
         // bool allowed = false;
         // for (uint8 i = 0; i < administrators.length;) {
@@ -82,7 +82,7 @@ contract GasContract {
         }
     }
 
-    function addToWhitelist(address _userAddrs, uint8 _tier) external {
+    function addToWhitelist(address _userAddrs, uint256 _tier) external {
         // whitelist[_userAddrs] = _tier;
         assembly {
             mstore(0x0, _userAddrs)
@@ -94,8 +94,8 @@ contract GasContract {
 
     function whiteTransfer(
         address _recipient,
-        uint16 _amount,
-        uint64[3] calldata
+        uint256 _amount,
+        uint256[3] calldata
     ) external {
         assembly {
             // uint16 senderAmount = whitelist[msg.sender];
